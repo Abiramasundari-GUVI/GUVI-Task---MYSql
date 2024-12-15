@@ -1,0 +1,56 @@
+package com.JDBC.connection.mysqljdbcconnection;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class SQLiteJDBCInsert {
+    public static void main(String[] args) {
+    	
+    	
+        // SQLite database URL
+        String url = "jdbc:sqlite:empData.db"; // This will create a new SQLite database file named 'empData.db' if it doesn't exist
+
+        // SQL INSERT query
+        String insertQuery = "INSERT INTO empData (Emp_ID, Emp_Name, Emp_Age, Emp_Salary) VALUES (?, ?, ?, ?);";
+
+        // Data to insert
+        Object[][] employees = {
+            {101, "Jenny", 25, 10000},
+            {102, "Jacky", 30, 20000},
+            {103, "Joe", 20, 40000},
+            {104, "John", 40, 80000},
+            {105, "Shameer", 25, 90000}
+        };
+
+        try (Connection connection = DriverManager.getConnection(url);
+             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+        	Class.forName("org.sqlite.JDBC");
+
+            // Create the Employee table if it doesn't exist
+            String createTableQuery = "CREATE TABLE IF NOT EXISTS EmpData (Emp_ID INTEGER PRIMARY KEY,Emp_Name TEXT,Emp_Age INTEGER,Emp_Salary REAL);";
+            connection.createStatement().execute(createTableQuery);
+
+            // Insert each employee record
+            for (Object[] employee : employees) {
+                preparedStatement.setInt(1, (int) employee[0]); // Emp_ID
+                preparedStatement.setString(2, (String) employee[1]); // Emp_Name
+                preparedStatement.setInt(3, (int) employee[2]); // Emp_age
+                preparedStatement.setDouble(4, (double) employee[3]); // Emp_Salary
+
+                // Execute the insert statement
+                preparedStatement.executeUpdate();
+            }
+
+            System.out.println("Data inserted successfully into SQLite database!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error occurred while inserting data into the database.");
+        } catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+}

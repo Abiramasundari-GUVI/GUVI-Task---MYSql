@@ -1,0 +1,77 @@
+package com.JDBC.connection.mysqljdbcconnection;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class SQLiteJDBCInsert {
+    public static void main(String[] args) {
+        // Database URL
+        String url = "jdbc:sqlite:employee.db"; // SQLite database URL
+        Connection conn = null;
+
+        try {
+            // Load SQLite JDBC driver
+            Class.forName("org.sqlite.JDBC");
+
+            // Establish the connection
+            conn = DriverManager.getConnection(url);
+
+            // SQL query to insert employee data
+            String sql = "INSERT INTO empData (Emp_ID, Emp_Name, Emp_Age, Emp_Salar) VALUES (?, ?, ?, ?)";
+
+            // Create a PreparedStatement
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            // Insert employee data
+            pstmt.setInt(1, 101);
+            pstmt.setString(2, "Jenny");
+            pstmt.setInt(3, 25);
+            pstmt.setDouble(4, 10000);
+            pstmt.executeUpdate();
+
+            pstmt.setInt(1, 102);
+            pstmt.setString(2, "Jacky");
+            pstmt.setInt(3, 30);
+            pstmt.setDouble(4, 20000);
+            pstmt.executeUpdate();
+
+            pstmt.setInt(1, 103);
+            pstmt.setString(2, "Joe");
+            pstmt.setInt(3, 20);
+            pstmt.setDouble(4, 40000);
+            pstmt.executeUpdate();
+
+            pstmt.setInt(1, 104);
+            pstmt.setString(2, "John");
+            pstmt.setInt(3, 40);
+            pstmt.setDouble(4, 80000);
+            pstmt.executeUpdate();
+
+            pstmt.setInt(1, 105);
+            pstmt.setString(2, "Shameer");
+            pstmt.setInt(3, 25);
+            pstmt.setDouble(4, 90000);
+            pstmt.executeUpdate();
+
+            System.out.println("Data inserted successfully!");
+
+        } catch (ClassNotFoundException e) {
+            System.err.println("SQLite JDBC Driver not found.");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("SQLException occurred.");
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error while closing connection.");
+                e.printStackTrace();
+            }
+        }
+    }
+}

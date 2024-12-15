@@ -1,0 +1,10 @@
+package com.JDBC.connection.mysqljdbcconnection;
+
+public class SQLiteJDBCInsert {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
